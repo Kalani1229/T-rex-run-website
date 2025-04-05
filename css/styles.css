@@ -4,6 +4,10 @@ body {
     font-family: 'Noto Sans TC', Arial, Helvetica, sans-serif;
     color: #333;
     line-height: 1.6;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    scroll-padding-top: 80px; /* Add padding for navbar height */
   }
   h1, h2, h3 {
     margin: 0.5em 0;
@@ -25,11 +29,11 @@ body {
     left: 0;
     width: 100%;
     z-index: 1000;
-
     display: flex;
     align-items: center;
     padding: 10px 20px;
     background-color: #fff;
+    height: 60px; /* Fixed height for consistency */
   }
   .logo img {
     height: 60px;
@@ -74,7 +78,9 @@ body {
     color: #000;
     text-align: center;
     overflow: hidden;
-    margin-top: 10vh;
+    margin-top: 10vh; /* Restore original margin */
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   .banner-content {
     position: relative;
@@ -134,6 +140,8 @@ body {
   .video-section {
     text-align: center;
     padding: 40px 20px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   .video-section h2 {
     font-size: 1.8em;
@@ -146,19 +154,21 @@ body {
   
   /* Rules Section */
   .rules-section {
-    padding: 60px 20px;
+    padding: 40px 20px 60px;
     background-color: #f9f9f9;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   /* Rules Title */
   .rules-title {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     width: 100%;
   }
 
@@ -186,7 +196,8 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    margin-top: -50px;
     flex-wrap: wrap;
     width: 100%;
     max-width: 840px;
@@ -257,7 +268,7 @@ body {
 
   /* Bottom CTA bar */
   .rules-bottom {
-    margin-top: 20px;
+    margin-top: 50px;
     width: 100%;
     max-width: 840px;
   }
@@ -523,6 +534,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .costume-title {
