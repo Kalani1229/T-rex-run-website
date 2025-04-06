@@ -50,19 +50,39 @@ function setupSmoothSectionScroll() {
     // Apply different offsets based on section
     let offsetY = 0;
     
-    // Special handling for the first section to account for its margin-top
+    // Set custom offsets for each section type
     if (index === 0) {
-      offsetY = 0;
+      // Banner section - always scroll to absolute top
+      gsap.to(window, {
+        duration: 0.5,
+        scrollTo: {
+          y: 0
+        },
+        ease: 'power2.inOut',
+        onComplete: function() {
+          isScrolling = false;
+        }
+      });
+      return; // Exit early for banner section
+    } else if (sections[index].classList.contains('video-section')) {
+      // Video section offset
+      offsetY = navbarHeight - 100;
+    } else if (sections[index].classList.contains('rules-section')) {
+      // Rules section offset
+      offsetY = navbarHeight - 20;
     } else if (sections[index].classList.contains('costume-section')) {
-      // Special offset for costume section
-      offsetY = navbarHeight - 60; // Adding extra 30px offset
+      // Costume section offset
+      offsetY = navbarHeight - 60;
+    } else if (sections[index].classList.contains('contact')) {
+      // Contact section offset
+      offsetY = navbarHeight - 30;
     } else {
-      // For other sections, account for navbar
+      // Default for any other sections
       offsetY = navbarHeight;
     }
     
     gsap.to(window, {
-      duration: 1,
+      duration: 0.7,
       scrollTo: {
         y: sections[index],
         offsetY: offsetY
@@ -153,60 +173,72 @@ function initAnimations() {
 
 // Header animations
 function animateHeader() {
-  gsap.from('.navbar', {
-    y: -50,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out'
-  });
+  // We'll animate navbar in banner animation sequence
   
   gsap.from('.nav-links li', {
     opacity: 0,
     y: -20,
-    stagger: 0.1,
-    duration: 0.8,
+    stagger: 0.07,
+    duration: 0.56,
     ease: 'power2.out',
-    delay: 0.5
+    delay: 1.05
   });
   
   gsap.from('.btn-contact-us', {
     scale: 0.8,
     opacity: 0,
-    duration: 0.6,
+    duration: 0.42,
     ease: 'back.out(1.7)',
-    delay: 0.8
+    delay: 1.26
   });
 }
 
 // Banner animations
 function animateBanner() {
-  const bannerTimeline = gsap.timeline();
+  // First timeline: navbar + 恐龍賽跑大賽
+  const firstTimeline = gsap.timeline();
   
-  bannerTimeline
+  firstTimeline
+    .from('.navbar', {
+      y: -50,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power3.out'
+    })
+    .from('.banner-text_2 h1', {
+      y: 50,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power3.out'
+    }, '<'); // Make them appear simultaneously
+  
+  // Second timeline: 清交第一屆 + 釋放你心中的恐龍
+  const secondTimeline = gsap.timeline({
+    delay: 0.4
+  });
+  
+  secondTimeline
     .from('.banner-text_1 h1', {
       y: 50,
       opacity: 0,
-      duration: 1,
+      duration: 0.5,
       ease: 'power3.out'
     })
-    .from('.banner-text_2', {
-      scale: 0.8,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'back.out(1.7)'
-    }, '-=0.2')
     .from('.banner h2', {
       y: 30,
       opacity: 0,
-      duration: 0.8,
+      duration: 0.4,
       ease: 'power2.out'
-    }, '-=0.3')
-    .from('.btn-register', {
-      scale: 0,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'back.out(1.7)'
-    }, '-=0.2');
+    }, '<'); // Make them appear simultaneously
+  
+  // Final animation: 現在報名 button
+  secondTimeline.from('.btn-register', {
+    scale: 0,
+    opacity: 0,
+    duration: 0.3,
+    ease: 'back.out(1.7)',
+    delay: 0.3
+  });
 }
 
 // Video section animations
@@ -222,33 +254,33 @@ function animateVideoSection() {
         .from('.text-container h1', {
           x: -100,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.56,
           ease: 'power2.out'
         })
         .from('.highlight-text', {
           backgroundColor: 'transparent',
-          duration: 0.4,
+          duration: 0.28,
           ease: 'power1.inOut'
-        }, '-=0.2')
+        }, '-=0.14')
         .from('.text-container p', {
           y: 20,
           opacity: 0,
-          duration: 0.6,
+          duration: 0.42,
           ease: 'power2.out'
-        }, '-=0.4')
+        }, '-=0.28')
         .from('.overlap', {
           x: 100,
           opacity: 0,
           rotation: 10,
-          duration: 1,
+          duration: 0.7,
           ease: 'power2.out'
-        }, '-=0.6')
+        }, '-=0.42')
         .from('.video-container', {
           y: 50,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.56,
           ease: 'power2.out'
-        }, '-=0.4');
+        }, '-=0.28');
     },
     once: true
   });
@@ -267,33 +299,33 @@ function animateRulesSection() {
         .from('.rules-title h2', {
           y: -30,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.56,
           ease: 'power2.out'
         })
         .from('.rules-title .highlighted', {
           backgroundColor: 'transparent',
-          duration: 0.4,
+          duration: 0.28,
           ease: 'power1.inOut'
-        }, '-=0.4')
+        }, '-=0.28')
         .from('.rules-subtitle', {
           y: 20,
           opacity: 0,
-          duration: 0.6,
+          duration: 0.42,
           ease: 'power2.out'
-        }, '-=0.2')
+        }, '-=0.14')
         .from('.rule-box', {
           y: 60,
           opacity: 0,
-          stagger: 0.2,
-          duration: 0.8,
+          stagger: 0.14,
+          duration: 0.56,
           ease: 'back.out(1.4)'
-        }, '-=0.2')
+        }, '-=0.14')
         .from('.rules-cta', {
           y: 40,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.56,
           ease: 'power2.out'
-        }, '-=0.2');
+        }, '-=0.14');
     },
     once: true
   });
@@ -305,7 +337,7 @@ function animateRulesSection() {
       gsap.to(box.querySelector('img'), {
         y: -5,
         scale: 1.05,
-        duration: 0.3,
+        duration: 0.21,
         ease: 'power2.out'
       });
     });
@@ -314,7 +346,7 @@ function animateRulesSection() {
       gsap.to(box.querySelector('img'), {
         y: 0,
         scale: 1,
-        duration: 0.3,
+        duration: 0.21,
         ease: 'power2.out'
       });
     });
@@ -334,33 +366,33 @@ function animateCostumeSection() {
         .from('.costume-title h2', {
           y: -30,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.56,
           ease: 'power2.out'
         })
         .from('.costume-subtitle', {
           y: 20,
           opacity: 0,
-          duration: 0.6,
+          duration: 0.42,
           ease: 'power2.out'
-        }, '-=0.4')
+        }, '-=0.28')
         .from('.costume-subtitle .highlight-text', {
           backgroundColor: 'transparent',
-          duration: 0.4,
+          duration: 0.28,
           ease: 'power1.inOut'
-        }, '-=0.3')
+        }, '-=0.21')
         .from('.option-column', {
           y: 60,
           opacity: 0,
-          stagger: 0.15,
-          duration: 0.8,
+          stagger: 0.105,
+          duration: 0.56,
           ease: 'back.out(1.4)'
-        }, '-=0.2')
+        }, '-=0.14')
         .from('.checkmark', {
           scale: 0,
-          stagger: 0.05,
-          duration: 0.4,
+          stagger: 0.035,
+          duration: 0.28,
           ease: 'back.out(2)'
-        }, '-=0.4');
+        }, '-=0.28');
     },
     once: true
   });
@@ -370,7 +402,7 @@ function animateCostumeSection() {
     boxShadow: '0 5px 25px rgba(67, 215, 255, 0.5)',
     repeat: -1,
     yoyo: true,
-    duration: 1.5,
+    duration: 1.05,
     ease: 'sine.inOut'
   });
 }
