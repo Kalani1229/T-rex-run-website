@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+  // Force scroll to top on page load/refresh when in banner section
+  ensureTopPositionOnRefresh();
+  
   // Initialize animations
   initAnimations();
   
@@ -12,6 +15,32 @@ document.addEventListener('DOMContentLoaded', function() {
   // Setup smooth section scrolling
   setupSmoothSectionScroll();
 });
+
+// Ensure page starts at top when refreshed in banner section
+function ensureTopPositionOnRefresh() {
+  // Get all sections to find where we are
+  const sections = document.querySelectorAll('.banner, .video-section, .rules-section, .costume-section, .contact');
+  const scrollPosition = window.scrollY + (window.innerHeight / 3);
+  
+  // Check if we're in the banner section
+  if (sections[0] && sections[0].classList.contains('banner')) {
+    const bannerTop = sections[0].offsetTop;
+    const bannerBottom = bannerTop + sections[0].offsetHeight;
+    
+    if (scrollPosition >= bannerTop && scrollPosition < bannerBottom) {
+      // We're in the banner section, force scroll to absolute top
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto' // Use 'auto' to avoid animation on page load
+      });
+    }
+  }
+  
+  // Always force scroll to top on initial page load - handles direct page loads
+  if (window.scrollY < 300) {
+    window.scrollTo(0, 0);
+  }
+}
 
 // Setup smooth section scrolling
 function setupSmoothSectionScroll() {

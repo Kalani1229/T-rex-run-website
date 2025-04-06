@@ -138,18 +138,52 @@ body {
   
   /* Video Section */
   .video-section {
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 40px 20px;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
-  .video-section h2 {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-  }
-  .video-container iframe {
+
+  .video-container iframe{
+    border-width: 0px;
+    width: 533px;
+    height: 300px;
+    border-radius: 10px;
     max-width: 100%;
-    height: auto;
+  }
+
+  .text-container{
+    text-align: left;
+    padding-left: 200px;
+  }
+
+  .text-container h1{
+    font-size: 3em;
+    font-weight:600;
+  }
+  .text-container p{
+    color: #595959;
+    font-size: 1.5em;
+    line-height: 0px;
+  }
+  .highlight-text{
+    background-color: #43D7FF;
+    border-radius: 10px;
+  }
+  .text-container .highlight-text{
+    padding: 0px 150px 0px 10px;
+  }
+
+  .overlap{
+    margin-left: -250px;
+    margin-bottom:120px;
+    width: 320px;
   }
   
   /* Rules Section */
@@ -425,6 +459,8 @@ body {
     background: #eee;
     padding: 30px 20px;
     text-align: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   .contact h2 {
     font-size: 1.5em;
@@ -452,71 +488,6 @@ body {
     color: #fff;
   }
   
-  .video-section {
-    height: 100vh;
-    display: flex;
-    flex-wrap: wrap; /* 當空間不足時可自動換行 */
-    gap: 0px;       /* 文字與影片間的間隔 */
-    justify-content: center;
-    align-items: center;
-  }
-
-  .video-container iframe{
-    border-width: 0px;
-    width: 533px;
-    height: 300px;
-    border-radius: 10px;
-  }
-
-  .text-container{
-    text-align: left;
-    padding-left: 200px;
-  }
-
-  .text-container h1{
-    font-size: 3em;
-    font-weight:600;
-  }
-  .text-container p{
-    color: #595959;
-    font-size: 1.5em;
-    line-height: 0px;
-  }
-  .highlight-text{
-    background-color: #43D7FF;
-    border-radius: 10px;
-  }
-  .text-container .highlight-text{
-    padding: 0px 150px 0px 10px;
-  }
-
-  .overlap{
-    margin-left: -250px;
-    margin-bottom:120px;
-    width: 320px;
-  }
-
-  .rules{
-    height: 100vh;
-  }
-
-  .rules h1{
-    font-size: 3em;
-    text-align: center;
-    line-height: 1;
-  }
-
-  .rules h2{
-    font-size: 1.2em;
-    color:#595959;
-    line-height: 0.5;
-  }
-
-  .rules .highlight-text{
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
   .race-types img{
     width: 25%;
   }
