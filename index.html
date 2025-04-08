@@ -13,6 +13,12 @@
     <nav class="navbar">
       <!-- Logo -->
       <a href="index.html" class="logo"><img src="images/icon.png" alt="活動Logo" /></a>
+      <!-- Mobile Menu Button -->
+      <div class="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <!-- Navigation Links -->
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
@@ -24,6 +30,15 @@
         <a href="index.html" class="btn-contact-us">聯絡我們</a>
       </div>
     </nav>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Rule</a></li>
+        <li><a href="index.html">Link</a></li>
+        <li><a href="index.html" class="mobile-contact-btn">聯絡我們</a></li>
+      </ul>
+    </div>
   </header>
 
   <!-- Banner Section -->
@@ -38,7 +53,9 @@
         </div>
        <h2>釋放你心中的恐龍<br>2025/5/17  14:00 ~ 17:00 清華大草坪</h2>
     </div>
-    <button class="btn-register">現在報名</button>
+    <button class="btn-register" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScQEp7Y9l1vjccVCIRw-r5LvzJAql6qokL5FxxYHkzkIB1Xvg/viewform?usp=dialog', '_blank')">現在報名</button>
+    <!-- Mobile Banner Dinosaur -->
+    <img class="banner-dinosaur" src="images/brown-dinosaur.png" alt="Brown Dinosaur">
   </section>
 
   <!-- Video Section -->
@@ -108,7 +125,7 @@
           <img src="images/purple-dinosaur.png" alt="紫色恐龍">
         </div>
         <div class="rules-text">
-          <p>《第一屆清交恐龍賽跑大賽》賽事完整規則</p>
+          <p><span class="hide-on-mobile">《第一屆清交恐龍賽跑大賽》</span>賽事完整規則</p>
         </div>
         <div class="rules-button">
           <button class="btn-rules">點我前往</button>

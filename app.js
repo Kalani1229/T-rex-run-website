@@ -12,9 +12,68 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners
   addEventListeners();
   
-  // Setup smooth section scrolling
-  setupSmoothSectionScroll();
+  // Setup smooth section scrolling (only on desktop)
+  if (window.innerWidth > 768) {
+    setupSmoothSectionScroll();
+  }
+  
+  // Setup mobile menu
+  setupMobileMenu();
+  
+  // Check for window resize to enable/disable smooth scrolling
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      // Only setup if it's not already set up
+      if (!window.smoothScrollInitialized) {
+        setupSmoothSectionScroll();
+        window.smoothScrollInitialized = true;
+      }
+    } else {
+      // Disable smooth scrolling on mobile
+      window.smoothScrollInitialized = false;
+      // Remove wheel event listeners
+      window.removeEventListener('wheel', wheelHandler, { passive: false });
+      window.removeEventListener('touchstart', touchStartHandler, { passive: true });
+      window.removeEventListener('touchmove', touchMoveHandler, { passive: false });
+      window.removeEventListener('touchend', touchEndHandler, { passive: true });
+      window.removeEventListener('keydown', keyDownHandler);
+    }
+  });
 });
+
+// Global event handler references
+let wheelHandler, touchStartHandler, touchMoveHandler, touchEndHandler, keyDownHandler;
+
+// Setup mobile menu functionality
+function setupMobileMenu() {
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  const menuLinks = document.querySelectorAll('.mobile-menu a');
+  
+  if (menuBtn && mobileMenu) {
+    // Toggle menu on button click
+    menuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('active');
+      document.body.classList.toggle('menu-open');
+      
+      // Animate hamburger to X
+      const spans = menuBtn.querySelectorAll('span');
+      spans.forEach(span => span.classList.toggle('active'));
+    });
+    
+    // Close menu when a link is clicked
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        
+        // Reset hamburger animation
+        const spans = menuBtn.querySelectorAll('span');
+        spans.forEach(span => span.classList.remove('active'));
+      });
+    });
+  }
+}
 
 // Ensure page starts at top when refreshed in banner section
 function ensureTopPositionOnRefresh() {
@@ -48,6 +107,9 @@ function setupSmoothSectionScroll() {
   let isScrolling = false;
   let startY;
   let currentSectionIndex = 0;
+  
+  // Set flag to indicate smooth scrolling is initialized
+  window.smoothScrollInitialized = true;
   
   // Get initial active section on page load
   updateCurrentSectionIndex();
@@ -124,7 +186,10 @@ function setupSmoothSectionScroll() {
   }
   
   // Handle wheel events for smooth scroll
-  window.addEventListener('wheel', function(event) {
+  wheelHandler = function(event) {
+    // Don't prevent default if mobile menu is open
+    if (document.body.classList.contains('menu-open')) return;
+    
     event.preventDefault();
     
     if (isScrolling) return;
@@ -133,21 +198,33 @@ function setupSmoothSectionScroll() {
     updateCurrentSectionIndex();
     
     scrollToSection(currentSectionIndex + scrollDirection);
-  }, { passive: false }); // Note: passive false is required to preventDefault
+  };
+  
+  // Add wheel event listener
+  window.addEventListener('wheel', wheelHandler, { passive: false }); // Note: passive false is required to preventDefault
   
   // Handle touch events for mobile devices
-  window.addEventListener('touchstart', function(event) {
+  touchStartHandler = function(event) {
+    // Don't track touch if mobile menu is open
+    if (document.body.classList.contains('menu-open')) return;
+    
     startY = event.touches[0].clientY;
-  }, { passive: true });
+  };
   
-  window.addEventListener('touchmove', function(event) {
+  touchMoveHandler = function(event) {
+    // Don't prevent default if mobile menu is open
+    if (document.body.classList.contains('menu-open')) return;
+    
     if (isScrolling) {
       event.preventDefault();
       return;
     }
-  }, { passive: false });
+  };
   
-  window.addEventListener('touchend', function(event) {
+  touchEndHandler = function(event) {
+    // Don't process touch end if mobile menu is open
+    if (document.body.classList.contains('menu-open')) return;
+    
     if (isScrolling) return;
     
     const endY = event.changedTouches[0].clientY;
@@ -161,10 +238,18 @@ function setupSmoothSectionScroll() {
       const scrollDirection = diffY < 0 ? 1 : -1;
       scrollToSection(currentSectionIndex + scrollDirection);
     }
-  }, { passive: true });
+  };
+  
+  // Add touch event listeners
+  window.addEventListener('touchstart', touchStartHandler, { passive: true });
+  window.addEventListener('touchmove', touchMoveHandler, { passive: false });
+  window.addEventListener('touchend', touchEndHandler, { passive: true });
   
   // Handle keyboard navigation
-  window.addEventListener('keydown', function(event) {
+  keyDownHandler = function(event) {
+    // Don't process keyboard if mobile menu is open
+    if (document.body.classList.contains('menu-open')) return;
+    
     if (isScrolling) return;
     
     if (event.key === 'ArrowDown' || event.key === 'PageDown') {
@@ -176,7 +261,10 @@ function setupSmoothSectionScroll() {
       updateCurrentSectionIndex();
       scrollToSection(currentSectionIndex - 1);
     }
-  });
+  };
+  
+  // Add keyboard event listener
+  window.addEventListener('keydown', keyDownHandler);
 }
 
 // Main animation initialization
@@ -483,9 +571,6 @@ function addEventListeners() {
         repeat: 1
       });
       
-      // Here you would typically redirect to registration page
-      // window.location.href = 'registration.html';
-      alert('註冊頁面即將上線！');
     });
   }
   
